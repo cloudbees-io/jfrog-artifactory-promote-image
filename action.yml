@@ -1,0 +1,59 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: action
+name: jfrog  promote actions
+inputs:
+  url:  # id of input
+    description: 'Url'
+    required: true
+  username:  # id of input
+    description: 'username - (Optional if token is provided)'
+    required: false
+    default: ''
+  password:  # id of input
+    description: 'password - (Optional if token is provided)'
+    required: false
+    default: ''
+  token:  # id of input
+    description: 'token - (Optional if username and password is provided)'
+    required: false
+    default: ''  
+  source-repository-name:  # id of input
+    description: 'source repository name'
+    required: true
+  target-repository-name:  # id of input
+    description: 'target repository name(Mandatory if target-image-name and target-tag are empty) '
+    required: false
+    default: ''
+  source-image-name:  # id of input
+    description: 'source image name'
+    required: true
+  target-image-name:  # id of input
+    description: 'target image name(Mandatory if target-repository-name and target-tag are empty)'
+    required: false
+    default: ''       
+  source-tag:  # id of input
+    description: 'source tag'
+    required: true
+  target-tag:  # id of input
+    description: 'target tag(Mandatory if target-image-name and target-repository-name are empty)'
+    required: false
+    default: ''
+  copy:  # id of input
+    description: 'copy'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - id: run-jfrog-action
+      name: run-jfrog-action
+      uses: docker://registry.saas-dev.beescloud.com/staging/jfrog-actions:main-6216540d17396da3efd35600a560a320820dc824
+      shell: sh
+      env:
+        CONFIG_JSON: '{"metaInfo":{"srcType":"promote","url":"${{ inputs.url }}","username":"${{ inputs.username }}","password":"${{ inputs.password }}","token":"${{ inputs.token }}","sourceRepositoryName":"${{ inputs.source-repository-name }}","targetRepositoryName":"${{ inputs.target-repository-name }}","sourceImageName":"${{ inputs.source-image-name }}","targetImageName":"${{ inputs.target-image-name }}","sourceTag":"${{ inputs.source-tag }}","targetTag":"${{ inputs.target-tag }}","copy":"${{ inputs.copy }}"}}'
+      run: |
+        echo $CONFIG_JSON
+        set -x
+        cd /app
+        ./jfrog_artifactory_actions_app invoke -i $CONFIG_JSON
