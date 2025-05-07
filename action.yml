@@ -48,7 +48,7 @@ runs:
   steps:
     - id: run-jfrog-promote-action
       name: run-jfrog-promote-action
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/jfrog-actions:main-da5cb7c640aa369243ff37688c55e81e5ad2c508
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/jfrog-actions:main-2a8a54e5d50844b2deac4adb484c85cfa9478d1e
       shell: sh
       env:
         CONFIG_JSON: '{"metaInfo":{"srcType":"promote","url":"${{ inputs.url }}","username":"${{ inputs.username }}","password":"${{ inputs.password }}","token":"${{ inputs.token }}","sourceRepositoryName":"${{ inputs.source-repository-name }}","targetRepositoryName":"${{ inputs.target-repository-name }}","sourceImageName":"${{ inputs.source-image-name }}","targetImageName":"${{ inputs.target-image-name }}","sourceTag":"${{ inputs.source-tag }}","targetTag":"${{ inputs.target-tag }}","copy":"${{ inputs.copy }}"}}'
