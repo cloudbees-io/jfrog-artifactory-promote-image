@@ -53,7 +53,7 @@ runs:
   steps:
     - id: run-jfrog-promote-action
       name: run-jfrog-promote-action
-      uses: docker://020229604682.dkr.ecr.us-east-1.amazonaws.com/actions/jfrog-actions:CBP-15599-4a270df0c4adb8a2213b807b41304407d651e5ba
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/jfrog-actions:main-345e0273ffd4a9cd8dc7a8b9bd5dae2012c5f1d4
       shell: sh
       env:
         CONFIG_JSON: '{"metaInfo":{"srcType":"promote","url":"${{ inputs.url }}","username":"${{ inputs.username }}","password":"${{ inputs.password }}","token":"${{ inputs.token }}","sourceRepositoryName":"${{ inputs.source-repository-name }}","targetRepositoryName":"${{ inputs.target-repository-name }}","sourceImageName":"${{ inputs.source-image-name }}","targetImageName":"${{ inputs.target-image-name }}","sourceTag":"${{ inputs.source-tag }}","targetTag":"${{ inputs.target-tag }}","copy":"${{ inputs.copy }}"}}'
