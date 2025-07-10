@@ -43,12 +43,17 @@ inputs:
     required: false
     default: ''
 
+outputs:
+  artifact-id:
+    value: ${{ steps.run-jfrog-promote-action.outputs.artifact-id }}
+    description: "The unique identifier of the artifact."
+
 runs:
   using: composite
   steps:
     - id: run-jfrog-promote-action
       name: run-jfrog-promote-action
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/jfrog-actions:main-6fd28fb7843147f71ef3e0743f5755473c7e4942
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/jfrog-actions:main-345e0273ffd4a9cd8dc7a8b9bd5dae2012c5f1d4
       shell: sh
       env:
         CONFIG_JSON: '{"metaInfo":{"srcType":"promote","url":"${{ inputs.url }}","username":"${{ inputs.username }}","password":"${{ inputs.password }}","token":"${{ inputs.token }}","sourceRepositoryName":"${{ inputs.source-repository-name }}","targetRepositoryName":"${{ inputs.target-repository-name }}","sourceImageName":"${{ inputs.source-image-name }}","targetImageName":"${{ inputs.target-image-name }}","sourceTag":"${{ inputs.source-tag }}","targetTag":"${{ inputs.target-tag }}","copy":"${{ inputs.copy }}"}}'
