@@ -1,6 +1,7 @@
 = CloudBees action: Promote an image from JFrog Artifactory
 
-Use this action to promote (move or copy) a Docker image from JFrog Artifactory. This action also reports artifact related data to the workflow run for artifact traceability purposes.
+Use this action to promote (move or copy) a Docker image from the JFrog Artifactory repository manager.
+`This action also reports artifact-related data to the workflow run for artifact traceability purposes.
 
 == Inputs
 
@@ -12,6 +13,21 @@ Use this action to promote (move or copy) a Docker image from JFrog Artifactory.
 | Data type
 | Required?
 | Description
+
+| `source-image-name`
+| String
+| Yes
+| The JFrog Artifactory source image name.
+
+| `source-repository-name`
+| String
+| Yes
+| The JFrog Artifactory source repository name.
+
+| `source-tag`
+| String
+| Yes
+| The JFrog Artifactory source tag.
 
 | `url`
 | String
@@ -33,34 +49,19 @@ Use this action to promote (move or copy) a Docker image from JFrog Artifactory.
 | Required only if `token` is not specified.
 | The JFrog Artifactory password.
 
-| `source-repository-name`
+| `target-image-name`
 | String
-| Yes
-| The JFrog Artifactory source repository name.
+| Required only if the `target-repository-name` and the `target-tag` are not specified.
+| The JFrog Artifactory target image name.
 
 | `target-repository-name`
 | String
 | Required only if the `target-image-name` and the `target-tag` are not specified.
 | The JFrog Artifactory target repository name.
 
-| `source-image-name`
-| String
-| Yes
-| The JFrog Artifactory source image name.
-
-| `target-image-name`
-| String
-| Required only if the `target-repository-name` and the `target-tag` are not specified.
-| The JFrog Artifactory target image name.
-
-| `source-tag`
-| String
-| Yes
-| The JFrog Artifactory source tag.
-
 | `target-tag`
 | String
-| Required only if the `target-repository-name`  and the `target-image-name` are not specified.
+| Required only if the `target-repository-name` and the `target-image-name` are not specified.
 | The JFrog Artifactory target tag.
 
 | `copy`
@@ -68,8 +69,6 @@ Use this action to promote (move or copy) a Docker image from JFrog Artifactory.
 | No
 | Specifies whether to move or copy the image.
 Default ('') specifies moving the image, and `true` specifies copying the image.
-
-|===
 
 == Outputs
 
@@ -83,31 +82,94 @@ Default ('') specifies moving the image, and `true` specifies copying the image.
 
 | `artifact-id`
 | String
-| The unique identifier of the artifact.
+| The unique identifier of the artifact reported to the CloudBees platform.
 
 |===
 
-== Usage example
+== Usage examples
 
-In your YAML file, add:
+=== Basic example
 
-[source,yaml]
+The following basic example moves an image to a specified destination:
+
+[source,yaml,role="default-expanded"]
 ----
       - name: Promote an image
         uses: cloudbees-io/jfrog-artifactory-promote-image@v1
         with:
+          source-image-name: source-image
+          source-repository-name: local-test
+          source-tag: 1
           url: ${{ vars.JFROG_URL }}
           username: ${{ secrets.JFROG_USERNAME }}
           password: ${{ secrets.JFROG_PASSWORD }}
-          token: ${{ secrets.JFROG_TOKEN }}
-          source-repository-name: local-test
           target-repository-name: test
-          source-image-name: source-image
-          target-image-name: target-image
-          source-tag: 1
-          target-tag: 12
-          copy: "copy"
 
+----
+
+=== Copying an image
+
+The following example copies an image to a new destination:
+
+[source,yaml,role="default-expanded"]
+----
+      - name: Copy an image
+        uses: cloudbees-io/jfrog-artifactory-promote-image@v1
+        with:
+          source-image-name: my-source-image
+          source-repository-name: my-repo
+          source-tag: 1
+          url: ${{ vars.JFROG_URL }}
+          token: ${{ secrets.JFROG_TOKEN }}
+          target-image-name: target-image
+          target-repository-name: my-target-repo
+          target-tag: 12
+          copy: copy
+----
+
+
+=== Full workflow example
+
+The following workflow example:
+
+* Checks out source code from a repository.
+* Copies a Docker image from a remote JFrog repository to another JFrog repository.
+* Uses the action to move a file.
+* Prints the artifact ID of the uploaded file.
+
+[source,yaml,role="default-expanded"]
+----
+name: jfrog-artifactory-promote-image
+kind: workflow
+apiVersion: automation.cloudbees.io/v1alpha1
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  promote-image-job:
+    steps:
+      - name: Check out source code
+        uses: cloudbees-io/checkout@v1
+      - name: JFrog Artifactory promote image
+        id: promote-image
+        uses: cloudbees-io/jfrog-artifactory-promote-image@v1
+        with:
+          source-image-name: my-docker-image
+          source-repository-name: jfrog-repo-1
+          source-tag: '1.0.0'
+          url: ${{ vars.JFROG_URL }}
+          username: ${{ vars.JFROG_USERNAME }}
+          password: ${{ secrets.JFROG_PASSWORD }}
+          target-repository-name: jfrog-repo-2
+          copy: 'true'
+      - name: Print output parameter artifact ID from JFrog pro mote action
+        uses: docker://alpine:latest
+        shell: sh
+        run: |
+          echo "artifact ID for the artifact my-artifact:1.0.0 at my-repo/my-jfrog/test.zip is: ${{ steps.jfrog-upload.outputs.artifact-id }}"
 ----
 
 == License
@@ -117,5 +179,5 @@ link:https://opensource.org/license/mit/[MIT license].
 
 == References
 
-* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform-actions/latest/[using actions in CloudBees workflows].
-* Learn about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform/latest/[the CloudBees platform].
+* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/actions[using actions in CloudBees workflows].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/[the CloudBees platform].
