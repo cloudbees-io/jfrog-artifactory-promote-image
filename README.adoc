@@ -1,7 +1,7 @@
 = CloudBees action: Promote an image from JFrog Artifactory
 
 Use this action to promote (move or copy) a Docker image from the JFrog Artifactory repository manager.
-`This action also reports artifact-related data to the workflow run for artifact traceability purposes.
+This action also reports artifact-related data to the workflow run for artifact traceability purposes.
 
 == Inputs
 
@@ -69,6 +69,7 @@ Use this action to promote (move or copy) a Docker image from the JFrog Artifact
 | No
 | Specifies whether to move or copy the image.
 Default ('') specifies moving the image, and `true` specifies copying the image.
+|===
 
 == Outputs
 
