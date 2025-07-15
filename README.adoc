@@ -69,6 +69,7 @@ Use this action to promote (move or copy) a Docker image from the JFrog Artifact
 | No
 | Specifies whether to move or copy the image.
 Default ('') specifies moving the image, and `true` specifies copying the image.
+|===
 
 == Outputs
 
