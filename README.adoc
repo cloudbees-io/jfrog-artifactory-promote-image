@@ -3,6 +3,12 @@
 Use this action to promote (move or copy) a Docker image from the JFrog Artifactory repository manager.
 This action also reports artifact-related data to the workflow run for artifact traceability purposes.
 
+== Automatic artifact data reporting
+
+This action link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/workflows/artifacts[reports artifact-related data] to the workflow run for artifact traceability purposes.
+
+Do *not* include the link:https://github.com/cloudbees-io/register-build-artifact[`register-build-artifact` action] in the same job, as the resulting run would register duplicate artifact entries to CloudBees platform.
+
 == Inputs
 
 [cols="2a,1a,3a,3a",options="header"]
@@ -83,7 +89,7 @@ Default ('') specifies moving the image, and `true` specifies copying the image.
 
 | `artifact-id`
 | String
-| The unique identifier of the artifact reported to the CloudBees platform.
+| The unique identifier of the artifact reported to CloudBees platform.
 
 |===
 
@@ -128,7 +134,6 @@ The following example copies an image to a new destination:
           copy: copy
 ----
 
-
 === Full workflow example
 
 The following workflow example:
@@ -166,7 +171,7 @@ jobs:
           password: ${{ secrets.JFROG_PASSWORD }}
           target-repository-name: jfrog-repo-2
           copy: 'true'
-      - name: Print output parameter artifact ID from JFrog pro mote action
+      - name: Print output parameter artifact ID from JFrog promote action
         uses: docker://alpine:latest
         shell: sh
         run: |
@@ -181,4 +186,4 @@ link:https://opensource.org/license/mit/[MIT license].
 == References
 
 * Learn more about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/actions[using actions in CloudBees workflows].
-* Learn about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/[the CloudBees platform].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/[CloudBees platform].
