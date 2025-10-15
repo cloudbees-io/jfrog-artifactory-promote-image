@@ -75,6 +75,17 @@ Do not include the link:https://github.com/cloudbees-io/register-build-artifact[
 | No
 | Specifies whether to move or copy the image.
 Default ('') specifies moving the image, and `true` specifies copying the image.
+
+| `artifact-name`
+| String
+| No
+| The name of the artifact, used when registering the build artifact in CloudBees platform.
+If not provided, the artifact name defaults to the source image name or target image name, depending on which is available.
+
+|`component-id`
+| String
+| No
+| The link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/organizations-components/components#component-id[ID of the component] associated with the artifact. If not provided, the artifact is registered with the component of the current workflow run. Default is `${{ cloudbees.component.id }}`.
 |===
 
 == Outputs
@@ -180,7 +191,7 @@ jobs:
 
 == License
 
-This code is made available under the 
+This code is made available under the
 link:https://opensource.org/license/mit/[MIT license].
 
 == References
