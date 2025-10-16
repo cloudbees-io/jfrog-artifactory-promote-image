@@ -44,8 +44,8 @@ inputs:
     default: ''
   artifact-name:
     description: >
-      The name of the artifact, used when registering the build artifact in CloudBees platform.
-      If not provided, the artifact name defaults to the target image name when available, else source image name.
+      The name of the artifact, used when registering the build artifact in CloudBees Unify.
+      If not provided, the artifact name defaults to the name of the image moved or copied to the target repository.
     required: false
   component-id:
     description: >

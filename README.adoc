@@ -7,7 +7,7 @@ This action also reports artifact-related data to the workflow run for artifact 
 
 This action link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/workflows/artifacts[reports artifact-related data] to the workflow run for artifact traceability purposes.
 
-Do not include the link:https://github.com/cloudbees-io/register-build-artifact[`register-build-artifact` action] for the same artifact version, as the resulting run would register duplicate artifact entries to CloudBees platform.
+Do not include the link:https://github.com/cloudbees-io/register-build-artifact[`register-build-artifact` action] for the same artifact version, as the resulting run would register duplicate artifact entries to CloudBees Unify.
 
 == Inputs
 
@@ -79,8 +79,8 @@ Default ('') specifies moving the image, and `true` specifies copying the image.
 | `artifact-name`
 | String
 | No
-| The name of the artifact, used when registering the build artifact in CloudBees platform.
-If not provided, the artifact name defaults to the source image name or target image name, depending on which is available.
+| The name of the artifact, used when registering the build artifact in CloudBees Unify.
+If not provided, the artifact name defaults to the name of the image moved or copied to the target repository.
 
 |`component-id`
 | String
@@ -100,7 +100,7 @@ If not provided, the artifact name defaults to the source image name or target i
 
 | `artifact-id`
 | String
-| The unique identifier of the artifact reported to CloudBees platform.
+| The unique identifier of the artifact reported to CloudBees Unify.
 
 |===
 
