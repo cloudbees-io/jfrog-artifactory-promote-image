@@ -71,10 +71,16 @@ Do not include the link:https://github.com/cloudbees-io/register-build-artifact[
 | The JFrog Artifactory target tag.
 
 | `copy`
-| String
+| Bool
 | No
 | Specifies whether to move or copy the image.
-Default ('') specifies moving the image, and `true` specifies copying the image.
+Default (false) specifies moving the image, and `true` specifies copying the image.
+
+| `isDocker`
+| Bool
+| Required only if docker image is provided as tar
+| Specifies whether a given tar file is a docker image or not.
+Default (false) will treat the tar as binary, and `true` will treat the tar as docker image.
 |===
 
 == Outputs
