@@ -38,6 +38,10 @@ inputs:
     description: 'target tag(Mandatory if target-image-name and target-repository-name are empty)'
     required: false
     default: ''
+  isDocker:  # is docker image as tar
+    description: 'isDocker'
+    required: false
+    default: false
   copy:  # id of input
     description: 'copy'
     required: false
@@ -63,10 +67,10 @@ runs:
   steps:
     - id: run-jfrog-promote-action
       name: run-jfrog-promote-action
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/jfrog-actions:main-7b49cb1e4dee9a4a2db3f8c020997ebf2957968e
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/jfrog-actions:main-65f5794d788824b77cb4b779a5519d5d7badc4db
       shell: sh
       env:
-        CONFIG_JSON: '{"metaInfo":{"srcType":"promote","url":"${{ inputs.url }}","username":"${{ inputs.username }}","password":"${{ inputs.password }}","token":"${{ inputs.token }}","sourceRepositoryName":"${{ inputs.source-repository-name }}","targetRepositoryName":"${{ inputs.target-repository-name }}","sourceImageName":"${{ inputs.source-image-name }}","targetImageName":"${{ inputs.target-image-name }}","sourceTag":"${{ inputs.source-tag }}","targetTag":"${{ inputs.target-tag }}","copy":"${{ inputs.copy }}","artifact-name":"${{ inputs.artifact-name }}","componentId":"${{ inputs.component-id }}"}}'
+        CONFIG_JSON: '{"metaInfo":{"srcType":"promote","url":"${{ inputs.url }}","username":"${{ inputs.username }}","password":"${{ inputs.password }}","token":"${{ inputs.token }}","sourceRepositoryName":"${{ inputs.source-repository-name }}","targetRepositoryName":"${{ inputs.target-repository-name }}","isDocker":${{ inputs.isDocker }},"sourceImageName":"${{ inputs.source-image-name }}","targetImageName":"${{ inputs.target-image-name }}","sourceTag":"${{ inputs.source-tag }}","targetTag":"${{ inputs.target-tag }}","copy":${{ inputs.copy }},"artifact-name":"${{ inputs.artifact-name }}","componentId":"${{ inputs.component-id }}"}}'
         CLOUDBEES_API_URL: ${{ cloudbees.api.url }}
         CLOUDBEES_API_TOKEN: ${{ cloudbees.api.token }}
         CLOUDBEES_RUN_ID: ${{ cloudbees.run_id }}
