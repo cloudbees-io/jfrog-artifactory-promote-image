@@ -16,7 +16,7 @@ inputs:
   token:  # id of input
     description: 'token - (Optional if username and password is provided)'
     required: false
-    default: ''  
+    default: ''
   source-repository-name:  # id of input
     description: 'source repository name'
     required: true
@@ -30,7 +30,7 @@ inputs:
   target-image-name:  # id of input
     description: 'target image name(Mandatory if target-repository-name and target-tag are empty)'
     required: false
-    default: ''       
+    default: ''
   source-tag:  # id of input
     description: 'source tag'
     required: true
@@ -46,6 +46,16 @@ inputs:
     description: 'copy'
     required: false
     default: ''
+  artifact-name:
+    description: >
+      The name of the artifact, used when registering the build artifact in CloudBees Unify.
+      If not provided, the artifact name defaults to the name of the image moved or copied to the target repository.
+    required: false
+  component-id:
+    description: >
+      The ID of the component associated with the artifact. If not provided, the artifact is registered with the component of the current workflow run.
+    default: ${{ cloudbees.component.id }}
+    required: false
 
 outputs:
   artifact-id:
@@ -57,10 +67,10 @@ runs:
   steps:
     - id: run-jfrog-promote-action
       name: run-jfrog-promote-action
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/jfrog-actions:main-65f5794d788824b77cb4b779a5519d5d7badc4db
+      uses: docker://020229604682.dkr.ecr.us-east-1.amazonaws.com/actions/jfrog-actions:main-77d846d5d88e530646ffd013d9d3a183582d798b
       shell: sh
       env:
-        CONFIG_JSON: '{"metaInfo":{"srcType":"promote","url":"${{ inputs.url }}","username":"${{ inputs.username }}","password":"${{ inputs.password }}","token":"${{ inputs.token }}","sourceRepositoryName":"${{ inputs.source-repository-name }}","targetRepositoryName":"${{ inputs.target-repository-name }}","isDocker":${{ inputs.isDocker }},"sourceImageName":"${{ inputs.source-image-name }}","targetImageName":"${{ inputs.target-image-name }}","sourceTag":"${{ inputs.source-tag }}","targetTag":"${{ inputs.target-tag }}","copy":${{ inputs.copy }}}}'
+        CONFIG_JSON: '{"metaInfo":{"srcType":"promote","url":"${{ inputs.url }}","username":"${{ inputs.username }}","password":"${{ inputs.password }}","token":"${{ inputs.token }}","sourceRepositoryName":"${{ inputs.source-repository-name }}","targetRepositoryName":"${{ inputs.target-repository-name }}","isDocker":${{ inputs.isDocker }},"sourceImageName":"${{ inputs.source-image-name }}","targetImageName":"${{ inputs.target-image-name }}","sourceTag":"${{ inputs.source-tag }}","targetTag":"${{ inputs.target-tag }}","copy":${{ inputs.copy }},"artifact-name":"${{ inputs.artifact-name }}","componentId":"${{ inputs.component-id }}"}}'
         CLOUDBEES_API_URL: ${{ cloudbees.api.url }}
         CLOUDBEES_API_TOKEN: ${{ cloudbees.api.token }}
         CLOUDBEES_RUN_ID: ${{ cloudbees.run_id }}

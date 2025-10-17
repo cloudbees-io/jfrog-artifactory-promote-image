@@ -7,7 +7,7 @@ This action also reports artifact-related data to the workflow run for artifact 
 
 This action link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/workflows/artifacts[reports artifact-related data] to the workflow run for artifact traceability purposes.
 
-Do not include the link:https://github.com/cloudbees-io/register-build-artifact[`register-build-artifact` action] for the same artifact version, as the resulting run would register duplicate artifact entries to CloudBees platform.
+Do not include the link:https://github.com/cloudbees-io/register-build-artifact[`register-build-artifact` action] for the same artifact version, as the resulting run would register duplicate artifact entries to CloudBees Unify.
 
 == Inputs
 
@@ -81,6 +81,17 @@ Default (false) specifies moving the image, and `true` specifies copying the ima
 | Required only if docker image is provided as tar
 | Specifies whether a given tar file is a docker image or not.
 Default (false) will treat the tar as binary, and `true` will treat the tar as docker image.
+
+| `artifact-name`
+| String
+| No
+| The name of the artifact, used when registering the build artifact in CloudBees Unify.
+If not provided, the artifact name defaults to the name of the image moved or copied to the target repository.
+
+|`component-id`
+| String
+| No
+| The link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/organizations-components/components#component-id[ID of the component] associated with the artifact. If not provided, the artifact is registered with the component of the current workflow run. Default is `${{ cloudbees.component.id }}`.
 |===
 
 == Outputs
@@ -95,7 +106,7 @@ Default (false) will treat the tar as binary, and `true` will treat the tar as d
 
 | `artifact-id`
 | String
-| The unique identifier of the artifact reported to CloudBees platform.
+| The unique identifier of the artifact reported to CloudBees Unify.
 
 |===
 
@@ -186,7 +197,7 @@ jobs:
 
 == License
 
-This code is made available under the 
+This code is made available under the
 link:https://opensource.org/license/mit/[MIT license].
 
 == References
