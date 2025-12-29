@@ -84,10 +84,10 @@ runs:
       name: Register an artifact with the CloudBees Unify
       uses: cloudbees-io/register-build-artifact@v2
       with:
-        name: ${{ steps.run-jfrog-action.outputs.artifact-name }}
-        url:  ${{ steps.run-jfrog-action.outputs.url }}
-        version: ${{ steps.run-jfrog-action.outputs.artifact-version }}
-        digest: ${{ steps.run-jfrog-action.outputs.digest }}
-        type: ${{ steps.run-jfrog-action.outputs.file-type }}
+        name: ${{ steps.run-jfrog-promote-action.outputs.artifact-name }}
+        url:  ${{ steps.run-jfrog-promote-action.outputs.url }}
+        version: ${{ steps.run-jfrog-promote-action.outputs.artifact-version }}
+        digest: ${{ steps.run-jfrog-promote-action.outputs.digest }}
+        type: ${{ steps.run-jfrog-promote-action.outputs.file-type }}
         component-id: ${{ inputs.component-id }}
 
